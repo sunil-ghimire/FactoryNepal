@@ -1,0 +1,122 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@sunil-ghimire 
+sunil-ghimire
+/
+Django-Beautifulsoup-News-Portal
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Django-Beautifulsoup-News-Portal/.gitignore
+@sunil-ghimire
+sunil-ghimire added base.html index.html
+Latest commit ee3af70 on Dec 14, 2021
+ History
+ 1 contributor
+78 lines (58 sloc)  1.03 KB
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+docker-entrypoint.prod.sh
+docker-compose-139.yml
+entrypoint.sh
+inovation.ini.stag
+docker-compose.yml
+#docker-compose.yml
+
+# If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
+# in your Git repository. Update and uncomment the following line accordingly.
+/static/
+/dvs_db_backup/
+naxa_utilities/local_setting.py
+mediaS
+
+
+### Django.Python Stack ###
+# Byte-compiled / optimized / DLL files
+kathmandu_post.csv
+.ipynb_checkpoints
+soup.ipynb_checkpoints
+# Distribution / packaging
+
+MANIFEST
+
+
+
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+myvenv/
+
+
+# Spyder project settings
+
+# Rope project settings
+
+# mkdocs documentation
+
+# mypy
+
+# Pyre type checker
+
+# Docker
+postgres-data-inovation
+Dockerfile
+
+#IDE
+.idea
+
+django_env
+Dockerfile
+Dockerfile.postgis
+postgis_env
+.backup/
+covid.log
+./covid.log
+media/*
+service_account.json
+
+
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Django-Beautifulsoup-News-Portal/.gitignore at master · sunil-ghimire/Django-Beautifulsoup-News-Portal
