@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@sunil-ghimire 
-sunil-ghimire
-/
-Django-Beautifulsoup-News-Portal
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Django-Beautifulsoup-News-Portal/.gitignore
-@sunil-ghimire
-sunil-ghimire added base.html index.html
-Latest commit ee3af70 on Dec 14, 2021
- History
- 1 contributor
-78 lines (58 sloc)  1.03 KB
-
 ### Django ###
 *.log
 *.pot
@@ -41,7 +12,7 @@ docker-compose.yml
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
-/static/
+/static/images/
 /dvs_db_backup/
 naxa_utilities/local_setting.py
 mediaS
