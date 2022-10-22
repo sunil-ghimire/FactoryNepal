@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for result in results %}
+        <div class="col">
+            <div class="card">
+                <img src="{{result.image.url}}" class="card-img-top"
+                    alt="Hollywood Sign on The Hill" />
+                <div class="card-body">
+                    <h5 class="card-title">{{result.name}}{{result.company_name}}</h5>
+                    <p class="card-text">
+                        {{result.description}}{{result.company_description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

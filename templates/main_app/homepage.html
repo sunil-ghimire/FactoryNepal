@@ -7,6 +7,7 @@
             <div class="search">
                 <i class="fa fa-search"></i>
                 <form name="myform" method="POST" action="{% url 'homepage' %}">
+                    {% csrf_token %}
                     <input type="text" class="form-control" name="search" placeholder="Type company or product name ...">
                     <button class="btn btn-primary">Search</button>
                 </form>

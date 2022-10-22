@@ -57,7 +57,7 @@ class Seller(models.Model):
     slug = models.SlugField(max_length=100, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.password > 5:
+        if len(self.password) > 5:
             self.password = make_password(self.password)
         else:
             raise ValidationErr('Password length must be greater than 5')

@@ -1,28 +1,25 @@
 from django.shortcuts import render
-
-from accounts.models import Product
+from django.db.models import Q
+from accounts.models import *
+from itertools import chain
 
 # Create your views here.
 
 
 def homepage(request):
     if request.method == "POST":
-        product_name = request.POST.get('myform')
-        try:
-            name_lists = Product.objects.filter(name__icontains=product_name)
-            return render(request, "accounts/homepage.html", {"name_lists": name_lists})
-        except Product.DoesNotExist:
-            return render(request, "accounts/homepage.html", {'name_lists': name_lists})
-    return render(request, 'accounts/homepage.html')
+        name = request.POST.get('search')
+        product_list = Product.objects.filter(Q(name__icontains=name) | Q(description__icontains=name) | Q(price__icontains=name))
+        seller_list = Seller.objects.filter(Q(company_name__icontains=name) | Q(company_description__icontains=name) | Q(company_address__icontains=name))
+        results = list(chain(product_list, seller_list))
+        for result in results:
+            print(result)
+        return render(request, 'main_app/search.html', {'results': results})
+    return render(request, 'main_app/homepage.html')
 
 
 def search(request):
-    if request.GET.get('myform'):  # write your form name here
-        product_name = request.GET.get('myform')
-        try:
-            name_lists = Product.objects.filter(name__icontains=product_name)
-            return render(request, "search.html", {"name_lists": name_lists})
-        except:
-            return render(request, "search.html", {'name_lists': name_lists})
+    if request.method == "POST":
+        pass
     else:
-        return render(request, 'search.html', {'name_lists':name_lists})
+        return render(request, 'main_app/search.html')
