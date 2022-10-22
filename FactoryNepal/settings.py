@@ -30,7 +30,7 @@ SECRET_KEY = env('secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -43,9 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #apps
+    # apps
     'accounts',
     'main_app',
+    'api',
+
+    # third party app
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

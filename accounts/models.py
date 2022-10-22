@@ -1,5 +1,6 @@
 # Create your models here.
 from wsgiref.validate import validator
+from xml.dom import ValidationErr
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
@@ -57,6 +58,12 @@ class Seller(models.Model):
     slug = models.SlugField(max_length=100, blank=True)
 
     def save(self, *args, **kwargs):
+        if self.password == self.password2:
+            self.password = make_password(self.password)
+            self.password2 = make_password(self.password2)
+        else:
+            raise ValidationErr('Password does not match')
+
         self.slug = slugify(self.company_name)
         super(Seller, self).save(*args, **kwargs)
 
