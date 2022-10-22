@@ -30,7 +30,6 @@ class Seller(models.Model):
     company_phone = models.CharField(max_length=20, blank=False)
     company_email = models.EmailField(blank=False)
     password = models.CharField(max_length=100, blank=False)
-    password2 = models.CharField(max_length=100, blank=True)
 
     website = models.CharField(max_length=100, blank=True)
     facebook = models.CharField(max_length=100, blank=True)
@@ -58,11 +57,10 @@ class Seller(models.Model):
     slug = models.SlugField(max_length=100, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.password == self.password2:
+        if self.password > 5:
             self.password = make_password(self.password)
-            self.password2 = make_password(self.password2)
         else:
-            raise ValidationErr('Password does not match')
+            raise ValidationErr('Password length must be greater than 5')
 
         self.slug = slugify(self.company_name)
         super(Seller, self).save(*args, **kwargs)
