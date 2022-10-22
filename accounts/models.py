@@ -1,11 +1,11 @@
 # Create your models here.
+from wsgiref.validate import validator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
-# Create your models here.
-
+from django.contrib.auth.hashers import make_password
 
 class User(AbstractUser):
     username = None

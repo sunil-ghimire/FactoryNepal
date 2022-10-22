@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Templates setup done</h1>
+<div class="container">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="search">
+                <i class="fa fa-search"></i>
+                <form name="myform" method="POST" action="{% url 'homepage' %}">
+                    <input type="text" class="form-control" name="search" placeholder="Type company or product name ...">
+                    <button class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
