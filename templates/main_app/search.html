@@ -1,22 +1,71 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container">
+    <div class="row m-4 align-items-center">
+        <div class="col-md-8 mx-auto mb-4">
+            <div class="search">
+                <form name="myform" method="POST" action="{% url 'homepage' %}">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" name="search"
+                    placeholder="Type company or product name ...">
+                    <i class="fa fa-search"></i>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for result in results %}
+        {% if seller_lists|length != 0 %}
+        {% for seller in seller_lists %}
         <div class="col">
             <div class="card">
-                <img src="{{result.image.url}}" class="card-img-top"
-                    alt="Hollywood Sign on The Hill" />
+                {% if seller.company_logo %}
+                <img src="{{seller.company_logo.url}}" class="card-img-top" />
+                {% else %}
+                <img src="{% static 'images/fastfood.jpeg' %}" class="card-img-top" />
+                {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{result.name}}{{result.company_name}}</h5>
+                    <h5 class="card-title">{{seller.company_name}}</h5>
                     <p class="card-text">
-                        {{result.description}}{{result.company_description}}
+                        {{seller.company_description}}
                     </p>
                 </div>
             </div>
         </div>
         {% endfor %}
+        {% endif %}
+
+
+        {% if product_lists|length != 0 %}
+        {% for product in product_lists %}
+        <div class="col">
+            <div class="card">
+                {% if product.image %}
+                <img src="{{product.image.url}}" class="card-img-top" />
+                {% else %}
+                <img src="{% static 'images/fastfood.jpeg' %}" class="card-img-top" />
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">
+                        {{product.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+        {% if seller_lists|length == 0 and product_lists|length == 0 %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">No results found</h5>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
-</div>
-{% endblock content %}
+    {% endblock content %}

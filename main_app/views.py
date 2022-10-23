@@ -11,10 +11,11 @@ def homepage(request):
         name = request.POST.get('search')
         product_list = Product.objects.filter(Q(name__icontains=name) | Q(description__icontains=name) | Q(price__icontains=name))
         seller_list = Seller.objects.filter(Q(company_name__icontains=name) | Q(company_description__icontains=name) | Q(company_address__icontains=name))
-        results = list(chain(product_list, seller_list))
-        for result in results:
-            print(result)
-        return render(request, 'main_app/search.html', {'results': results})
+        context = {
+            'product_lists': product_list,
+            'seller_lists': seller_list,
+        }
+        return render(request, 'main_app/search.html', context=context)
     return render(request, 'main_app/homepage.html')
 
 
