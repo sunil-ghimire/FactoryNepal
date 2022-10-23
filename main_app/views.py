@@ -35,4 +35,17 @@ def company(request):
         }
         return render(request, 'main_app/company.html', context=context)
 def product(request):
-    pass
+    if request.method == "GET":
+        product_list = Product.objects.all()
+        context = {
+            'product_lists': product_list,
+        }
+        return render(request, 'main_app/product.html', context=context)
+    elif request.method == "POST":
+        name = request.POST.get('product_search')
+        product_list = Product.objects.filter(Q(name__icontains=name) | Q(
+            description__icontains=name) | Q(price__icontains=name))
+        context = {
+            'product_lists': product_list,
+        }
+        return render(request, 'main_app/product.html', context=context)
