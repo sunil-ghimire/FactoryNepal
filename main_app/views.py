@@ -49,3 +49,34 @@ def product(request):
             'product_lists': product_list,
         }
         return render(request, 'main_app/product.html', context=context)
+
+
+
+def seller_signup(request):
+    if request.method == "POST":
+        company_name = request.POST.get('company_name')
+        company_owner_name = request.POST.get('company_owner_name')
+        company_description = request.POST.get('company_description',None)
+        company_address = request.POST.get('company_address')
+        company_email = request.POST.get('company_email')
+        password = request.POST.get('password')
+        company_phone = request.POST.get('company_phone')
+        company_website = request.POST.get('company_website',None)
+        company_logo = request.FILES.get('company_logo')
+        company_banner = request.FILES.get('company_banner')
+
+        seller = Seller(company_name=company_name, company_owner_name = company_owner_name,company_description=company_description, company_address=company_address, company_email=company_email, company_phone=company_phone, company_website=company_website, password=password, company_logo=company_logo, company_banner=company_banner)
+        seller.save()
+        return redirect('seller_login')
+    return render(request, 'main_app/seller_signup.html')
+
+def seller_login(request):
+    if request.method == "POST":
+        company_email = request.POST.get('company_email')
+        password = request.POST.get('password')
+        seller = Seller.objects.filter(company_email=company_email, password=password)
+        if seller:
+            return redirect('seller_dashboard')
+        else:
+            return redirect('seller_login')
+    return render(request, 'main_app/seller_login.html')
