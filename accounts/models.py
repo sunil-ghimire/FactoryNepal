@@ -27,7 +27,7 @@ class Seller(models.Model):
     company_name = models.CharField(max_length=100, blank=False)
     company_owner_name = models.CharField(max_length=100, blank=False)
     company_address = models.CharField(max_length=200, blank=False)
-    company_phone = models.CharField(max_length=20, blank=False)
+    company_phone = models.CharField(max_length=20,null=False, blank=False)
     company_email = models.EmailField(blank=False)
     password = models.CharField(max_length=100, blank=False)
 

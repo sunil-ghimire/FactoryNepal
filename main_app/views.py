@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.db.models import Q
 from accounts.models import *
-
+from .forms import *
+from django.contrib.auth import logout
 # Create your views here.
 
 
@@ -50,38 +51,27 @@ def product(request):
         }
         return render(request, 'main_app/product.html', context=context)
 
-
-
 def seller_signup(request):
     if request.method == "POST":
-        company_name = request.POST.get('company_name')
-        company_owner_name = request.POST.get('company_owner_name')
-        company_description = request.POST.get('company_description',None)
-        company_phone = request.POST.get('company_phone')
-        company_address = request.POST.get('company_address')
-        company_email = request.POST.get('company_email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
-        company_phone = request.POST.get('company_phone')
-        website = request.POST.get('website')
-        company_logo = request.FILES.get('company_logo')
-        company_banner = request.FILES.get('company_banner')
-
-        if password != password2:
-            return redirect('seller_signup')
-
-        seller = Seller(company_name=company_name, company_owner_name = company_owner_name,company_description=company_description, company_address=company_address, company_email=company_email, company_phone=company_phone, website=website, password=password, company_logo=company_logo, company_banner=company_banner)
-        seller.save()
-        return redirect('/')
-    return render(request, 'main_app/seller_signup.html')
+        form = SellerSignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = SellerSignupForm()
+    return render(request, 'main_app/seller_signup.html', {'form': form})
 
 def seller_login(request):
     if request.method == "POST":
-        company_email = request.POST.get('company_email')
-        password = request.POST.get('password')
-        seller = Seller.objects.filter(company_email=company_email, password=password)
-        if seller:
-            return redirect('seller_dashboard')
-        else:
-            return redirect('seller_login')
-    return render(request, 'main_app/seller_login.html')
+        form = SellerSignForm(request.POST)
+        print(form)
+        if form.is_valid():
+            print("valid")
+            return redirect('/')
+    else:
+        form = SellerSignForm()
+    return render(request, 'main_app/seller_signin.html', {'form': form})
+
+def seller_logout(request):
+    logout(request)
+    return redirect('/')

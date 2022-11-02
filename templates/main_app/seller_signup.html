@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container mt-4">
@@ -7,78 +8,7 @@
         <form class="mx-auto text-center" method="POST">
             {% csrf_token %}
             <!-- 2 column grid layout with text inputs for the first and last names -->
-            <div class="row mb-4">
-                <div class="col">
-                    <div class="form-outline">
-                        <input type="text" id="comapny_name" class="form-control" placeholder="Enter company name..." name="company_name" required />
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-outline">
-                        <input type="text" id="company_owner_name" class="form-control" placeholder="Enter company owner name ..." name="company_owner_name" required />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_address" class="form-control" placeholder="Enter company address..." name="company_address" required/>
-            </div>
-
-
-            <div class="form-outline mb-4">
-                <input type="text" id="number_of_employee" class="form-control" placeholder="Enter number of employee..." name="number_of_employee" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="website" class="form-control" placeholder="Enter website..." name="website" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_description" class="form-control" placeholder="Enter about company..." name="company_description" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_phone" class="form-control" placeholder="Enter phone number..." name="company_phone" required />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_country" class="form-control" placeholder="Enter country..." name="company_country" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_state" class="form-control" placeholder="Enter state..." name="company_state"/>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_city" class="form-control" placeholder="Enter city..." name="company_city" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_zip" class="form-control" placeholder="Enter zip..." name="company_zip" />
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_pan_number" class="form-control" placeholder="Enter pan number..." name="comapny_pan_number"/>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="company_established" class="form-control" placeholder="Enter company established date..." name="company_established" />
-            </div>
-
-
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-                <input type="text" id="company_email" class="form-control" placeholder="Enter email address..." name="company_email"  required/>
-            </div>
-
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-                <input type="password" id="password" class="form-control" placeholder="Enter password..." name="password" required/>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="password" id="password2" class="form-control" placeholder="Confirm password..." name="password2" required/>
-            </div>
+            {{form|crispy}}
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary btn-block mb-4 mx-auto">Sign up</button>
