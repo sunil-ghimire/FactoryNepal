@@ -1,6 +1,5 @@
 from django import forms
 from accounts.models import *
-from django.contrib.auth.hashers import make_password
 
 class SellerSignupForm(forms.ModelForm):
     class Meta:

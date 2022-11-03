@@ -1,9 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from accounts.models import *
 from .forms import *
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 # Create your views here.
+
+User = get_user_model()
 
 
 def homepage(request):
@@ -20,6 +22,7 @@ def homepage(request):
         return render(request, 'main_app/search.html', context=context)
     return render(request, 'main_app/homepage.html')
 
+
 def company(request):
     if request.method == "GET":
         company_list = Seller.objects.all()
@@ -35,6 +38,8 @@ def company(request):
             'seller_lists': company_list,
         }
         return render(request, 'main_app/company.html', context=context)
+
+
 def product(request):
     if request.method == "GET":
         product_list = Product.objects.all()
@@ -51,6 +56,7 @@ def product(request):
         }
         return render(request, 'main_app/product.html', context=context)
 
+
 def seller_signup(request):
     if request.method == "POST":
         form = SellerSignupForm(request.POST, request.FILES)
@@ -61,17 +67,21 @@ def seller_signup(request):
         form = SellerSignupForm()
     return render(request, 'main_app/seller_signup.html', {'form': form})
 
+
 def seller_login(request):
     if request.method == "POST":
         form = SellerSignForm(request.POST)
-        print(form)
         if form.is_valid():
-            print("valid")
             return redirect('/')
     else:
         form = SellerSignForm()
     return render(request, 'main_app/seller_signin.html', {'form': form})
 
+
 def seller_logout(request):
     logout(request)
     return redirect('/')
+
+
+def user_login(request):
+    return render(request, 'main_app/user_login.html')
