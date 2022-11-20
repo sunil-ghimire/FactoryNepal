@@ -6,12 +6,23 @@ from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
+from django.conf import settings
 
 class User(AbstractUser):
+    USER_TYPE =(
+    ("user", "User"),
+    ("seller", "Seller"),
+)
     username = None
     email = models.EmailField(_('email address'), unique=True)
     full_name = models.CharField(max_length=100, blank=False)
     password2 = models.CharField(max_length=100, blank=True)
+
+    user_type = models.CharField(
+        max_length=6,
+        choices=USER_TYPE,
+        default='user',
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
@@ -22,13 +33,11 @@ class User(AbstractUser):
         return self.email
 
 
-class Seller(models.Model):
+class Seller(User):
     company_name = models.CharField(max_length=100, blank=False)
     company_owner_name = models.CharField(max_length=100, blank=False)
     company_address = models.CharField(max_length=200, blank=False)
     company_phone = models.CharField(max_length=20,null=False, blank=False)
-    company_email = models.EmailField(blank=False)
-    password = models.CharField(max_length=100, blank=False)
 
     website = models.CharField(max_length=100, blank=True)
     facebook = models.CharField(max_length=100, blank=True)

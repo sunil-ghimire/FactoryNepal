@@ -10,8 +10,8 @@ class UserAdmin(admin.ModelAdmin):
 
 class SellerAdmin(admin.ModelAdmin):
     list_display = ['company_name',
-                    'company_phone', 'company_email']
-    search_fields=['company_name', 'company_email', 'company_phone', 'company_address', 'company_city', 'company_state', 'company_country', 'company_zip']
+                    'company_phone']
+    search_fields=['company_name', 'company_phone', 'company_address', 'company_city', 'company_state', 'company_country', 'company_zip']
 
 
 class ProductAdmin(admin.ModelAdmin):

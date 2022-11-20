@@ -39,7 +39,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/product">Product</a>
                     </li>
-                    {% if not user.is_authenticated %}
+                    {% if not request.user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/seller/signup">Become a Seller</a>
                     </li>
@@ -50,10 +50,11 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if not user.is_authenticated %}
+                            {% if not request.user.is_authenticated %}
                             <li><a class="dropdown-item" href="/login">Login</a></li>
                             <li><a class="dropdown-item" href="/signup">Sign up</a></li>
                             {% else %}
+                            <li><a class="dropdown-item" href="/profile">{{user.email}}</a></li>
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="/setting">Setting</a></li>
                             <li><a class="dropdown-item" href="/logout">Logout</a></li>
