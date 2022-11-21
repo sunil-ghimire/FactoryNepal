@@ -3,6 +3,7 @@ from django.db.models import Q
 from accounts.models import *
 from .forms import *
 from django.contrib.auth import logout, get_user_model
+from .forms import SellerSingupForm
 # Create your views here.
 
 User = get_user_model()
@@ -58,30 +59,41 @@ def product(request):
 
 
 def seller_signup(request):
-    if request.method == "POST":
-        form = SellerSignupForm(request.POST, request.FILES)
+    if request.method == "GET":
+        form = SellerSingupForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'main_app/seller_signup.html', context=context)
+    elif request.method == "POST":
+        form = SellerSingupForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('/')
-    else:
-        form = SellerSignupForm()
-    return render(request, 'main_app/seller_signup.html', {'form': form})
+            return redirect('homepage')
+        else:
+            return render(request, 'main_app/seller_signup.html', {'form': form})
 
-
-def seller_login(request):
-    if request.method == "POST":
-        form = SellerSignForm(request.POST)
-        if form.is_valid():
-            return redirect('/')
-    else:
-        form = SellerSignForm()
-    return render(request, 'main_app/seller_signin.html', {'form': form})
 
 
 def seller_logout(request):
     logout(request)
-    return redirect('/')
+    return redirect('main_app/homepage')
 
 
-def user_login(request):
-    return render(request, 'main_app/user_login.html')
+
+
+#user section start here
+def user_signup(request):
+    if request.method == "GET":
+        form = UserSignupForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'main_app/user_signup.html', context=context)
+    elif request.method == "POST":
+        form = UserSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('homepage')
+        else:
+            return render(request, 'main_app/user_signup.html', {'form': form})
