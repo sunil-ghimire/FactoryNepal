@@ -102,3 +102,7 @@ def seller_register_page(request):
 
     context = {'form': form}
     return render(request, 'main_app/seller_signup.html', context)
+
+
+def dashboard(request):
+    return render(request, 'main_app/dashboard.html')
