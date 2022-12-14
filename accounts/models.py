@@ -33,6 +33,12 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    def check_user_type(self):
+        if self.user_type == 'seller':
+            return True
+        else:
+            return False
+
 
 def upload_path(instance, filename):
     return '/'.join(['images', str(instance.company_name), filename])
