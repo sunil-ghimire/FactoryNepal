@@ -3,7 +3,7 @@ from django.db.models import Q
 from accounts.models import *
 from .forms import *
 from django.contrib.auth import logout, get_user_model
-from .forms import SellerSingupForm
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 User = get_user_model()
@@ -58,42 +58,47 @@ def product(request):
         return render(request, 'main_app/product.html', context=context)
 
 
-def seller_signup(request):
-    if request.method == "GET":
-        form = SellerSingupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'main_app/seller_signup.html', context=context)
-    elif request.method == "POST":
+def register_page(request):
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    context = {'form': form}
+    return render(request, 'main_app/user_signup.html', context)
+
+
+def login_page(request):
+    form = UserLoginForm()
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('homepage')
+    context = {'form': form}
+    return render(request, 'main_app/user_login.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('homepage')
+
+
+def seller_register_page(request):
+    form = SellerSingupForm()
+
+    if request.method == "POST":
         form = SellerSingupForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('homepage')
+            return redirect('login')
         else:
             return render(request, 'main_app/seller_signup.html', {'form': form})
 
-
-
-def seller_logout(request):
-    logout(request)
-    return redirect('main_app/homepage')
-
-
-
-
-#user section start here
-def user_signup(request):
-    if request.method == "GET":
-        form = UserSignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'main_app/user_signup.html', context=context)
-    elif request.method == "POST":
-        form = UserSignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('homepage')
-        else:
-            return render(request, 'main_app/user_signup.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'main_app/seller_signup.html', context)

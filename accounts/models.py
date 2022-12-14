@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class User(AbstractUser):
@@ -17,7 +18,6 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     full_name = models.CharField(max_length=100, null=True, blank=True)
-    password2 = models.CharField(max_length=100, blank=True)
 
     user_type = models.CharField(
         max_length=6,
@@ -33,13 +33,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-    def save(self, *args, **kwargs):
-        if len(self.password) > 5:
-            self.password = make_password(self.password)
-        else:
-            raise ValidationError('Password length must be greater than 5')
 
-        super(User, self).save(*args, **kwargs)
+def upload_path(instance, filename):
+    return '/'.join(['images', str(instance.company_name), filename])
 
 
 class Seller(User):
@@ -60,8 +56,8 @@ class Seller(User):
     company_type = models.CharField(max_length=100, blank=True)
     company_size = models.CharField(max_length=100, blank=True)
     company_description = models.TextField(blank=True)
-    company_logo = models.ImageField(upload_to='images/', blank=True)
-    company_banner = models.ImageField(upload_to='images/', blank=True)
+    company_logo = models.ImageField(upload_to=upload_path, blank=True)
+    company_banner = models.ImageField(upload_to=upload_path, blank=True)
     company_location = models.CharField(max_length=100, blank=True)
     company_country = models.CharField(max_length=100, blank=True)
     company_state = models.CharField(max_length=100, blank=True)
@@ -71,7 +67,7 @@ class Seller(User):
     company_longitude = models.CharField(max_length=100, blank=True)
     company_established = models.CharField(max_length=100, blank=True)
     company_pan_number = models.CharField(max_length=100, blank=True)
-    company_pan_document = models.ImageField(upload_to='images/', blank=True)
+    company_pan_document = models.ImageField(upload_to=upload_path, blank=True)
     slug = models.SlugField(max_length=100, blank=True)
 
     class Meta:
@@ -81,11 +77,6 @@ class Seller(User):
         return self.company_name
 
     def save(self, *args, **kwargs):
-        if len(self.password) > 5:
-            self.password = make_password(self.password)
-        else:
-            raise ValidationError   ('Password length must be greater than 5')
-
         self.slug = slugify(self.company_name)
         super(Seller, self).save(*args, **kwargs)
 

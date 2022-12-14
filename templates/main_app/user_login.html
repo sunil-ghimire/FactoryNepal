@@ -6,13 +6,14 @@
 {% block content %}
 <div class="container mt-4">
     <div class="row">
+        <h1 class="text-center">Login</h1>
         <form class="mx-auto text-center" method="POST">
             {% csrf_token %}
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4 mx-auto">Sign in</button>
+            {{form|crispy}}
+            <button type="submit" class="btn btn-primary btn-block mb-4 mx-auto">Log in</button>
         </form>
-        <a href="{% url 'seller_login' %}">Login as seller</a>
     </div>
 </div>
 {% endblock content %}

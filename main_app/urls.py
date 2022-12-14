@@ -6,15 +6,9 @@ urlpatterns = [
     path('company/', views.company, name='company'),
     path('product/', views.product, name='product'),
 
-    path('seller/signup/', views.seller_signup, name='seller_signup'),
-    # path('seller/login/',views.seller_login, name="seller_login"),
-    path('logout/', views.seller_logout,name="seller_logout"),
+    path('register/', views.register_page, name='register'),
+    path('login/', views.login_page, name='login'),
+    path('logout/', views.logout_user, name='logout'),
 
-
-
-
-    #normal user
-    # path('login/', views.user_login, name='user_login'),
-    path('signup/', views.user_signup, name='user_signup'),
-
+    path('seller/register/', views.seller_register_page, name='seller_register'),
 ]
