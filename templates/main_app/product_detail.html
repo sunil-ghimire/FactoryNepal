@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Factory Nepal | {{product.name}}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container my-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card">
+                {% if product.image %}
+                <img src="{{product.image.url}}" class="card-img-top" />
+                {% else %}
+                <img src="{% static 'images/fastfood.jpeg' %}" class="card-img-top" />
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{product.name}}</h5>
+                    <p class="card-text">
+                        {{product.description}}
+                        {{product.price}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
