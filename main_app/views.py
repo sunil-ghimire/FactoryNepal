@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
+from django.db.models import Q, Sum
 from accounts.models import *
 from .forms import *
 from django.contrib.auth import logout, get_user_model
@@ -41,6 +41,14 @@ def company(request):
         return render(request, 'main_app/company.html', context=context)
 
 
+def company_detail(request, pk):
+    seller = Seller.objects.get(id=pk)
+    context = {
+        'seller': seller,
+    }
+    return render(request, 'main_app/company_detail.html', context=context)
+
+
 def product(request):
     if request.method == "GET":
         product_list = Product.objects.all()
@@ -56,6 +64,14 @@ def product(request):
             'product_lists': product_list,
         }
         return render(request, 'main_app/product.html', context=context)
+
+
+def product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+    context = {
+        'product': product,
+    }
+    return render(request, 'main_app/product_detail.html', context=context)
 
 
 def register_page(request):
@@ -105,7 +121,13 @@ def seller_register_page(request):
 
 
 def dashboard(request):
-    return render(request, 'main_app/dashboard.html')
+    products = Product.objects.all()
+    totol_price = Product.objects.all().aggregate(Sum('price'))
+    context = {
+        'products': products,
+        'total_price': totol_price['price__sum'],
+    }
+    return render(request, 'main_app/dashboard.html', context=context)
 
 
 def add_product(request):
