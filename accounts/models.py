@@ -43,6 +43,9 @@ class User(AbstractUser):
 def upload_path(instance, filename):
     return '/'.join(['images', str(instance.company_name), filename])
 
+def upload_product_path(instance, filename):
+    return '/'.join(['images', str(instance.name), filename])
+
 
 class Seller(User):
     company_name = models.CharField(max_length=100, null=True, blank=True)
@@ -119,11 +122,11 @@ class ProductSubCategory(models.Model):
 
 
 class Product(models.Model):
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=100)
-    price = models.FloatField(null=True, blank=True)
+    price = models.FloatField()
     description = models.TextField()
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to=upload_product_path)
     category = models.ForeignKey(
         ProductCategory, on_delete=models.CASCADE, null=True, blank=True)
     sub_category = models.ForeignKey(

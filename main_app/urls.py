@@ -13,4 +13,7 @@ urlpatterns = [
     path('seller/register/', views.seller_register_page, name='seller_register'),
 
     path('dashboard/', views.dashboard, name='seller_dashboard'),
+    path('add-product/', views.add_product, name='seller_product'),
+    path('add-product-category/', views.add_product_category, name='seller_product_category'),
+    path('add-product-sub-category/', views.add_product_sub_category, name='seller_product_sub_category'),
 ]

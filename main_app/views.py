@@ -106,3 +106,36 @@ def seller_register_page(request):
 
 def dashboard(request):
     return render(request, 'main_app/dashboard.html')
+
+
+def add_product(request):
+    form = ProductForm()
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product.html', context)
+
+
+def add_product_category(request):
+    form = ProductCategoryForm()
+    if request.method == "POST":
+        form = ProductCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product_category.html', context)
+
+
+def add_product_sub_category(request):
+    form = ProductSubCategoryForm()
+    if request.method == "POST":
+        form = ProductSubCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product_sub_category.html', context)
