@@ -1,18 +1,29 @@
 # Create your models here.
-from wsgiref.validate import validator
-from xml.dom import ValidationErr
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+
 
 class User(AbstractUser):
+    USER_TYPE = (
+        ("user", "User"),
+        ("seller", "Seller"),
+    )
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    full_name = models.CharField(max_length=100, blank=False)
-    password2 = models.CharField(max_length=100, blank=True)
+    full_name = models.CharField(max_length=100, null=True, blank=True)
+
+    user_type = models.CharField(
+        max_length=6,
+        choices=USER_TYPE,
+        default='user',
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
@@ -22,14 +33,26 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    def check_user_type(self):
+        if self.user_type == 'seller':
+            return True
+        else:
+            return False
 
-class Seller(models.Model):
-    company_name = models.CharField(max_length=100, blank=False)
-    company_owner_name = models.CharField(max_length=100, blank=False)
-    company_address = models.CharField(max_length=200, blank=False)
-    company_phone = models.CharField(max_length=20,null=False, blank=False)
-    company_email = models.EmailField(blank=False)
-    password = models.CharField(max_length=100, blank=False)
+
+def upload_path(instance, filename):
+    return '/'.join(['images', str(instance.company_name), filename])
+
+def upload_product_path(instance, filename):
+    return '/'.join(['images', str(instance.name), filename])
+
+
+class Seller(User):
+    company_name = models.CharField(max_length=100, null=True, blank=True)
+    company_owner_name = models.CharField(
+        max_length=100, null=True, blank=True)
+    company_address = models.CharField(max_length=200, null=True, blank=True)
+    company_phone = models.CharField(max_length=20, null=True, blank=True)
 
     website = models.CharField(max_length=100, blank=True)
     facebook = models.CharField(max_length=100, blank=True)
@@ -42,8 +65,8 @@ class Seller(models.Model):
     company_type = models.CharField(max_length=100, blank=True)
     company_size = models.CharField(max_length=100, blank=True)
     company_description = models.TextField(blank=True)
-    company_logo = models.ImageField(upload_to='images/', blank=True)
-    company_banner = models.ImageField(upload_to='images/', blank=True)
+    company_logo = models.ImageField(upload_to=upload_path, blank=True)
+    company_banner = models.ImageField(upload_to=upload_path, blank=True)
     company_location = models.CharField(max_length=100, blank=True)
     company_country = models.CharField(max_length=100, blank=True)
     company_state = models.CharField(max_length=100, blank=True)
@@ -53,23 +76,18 @@ class Seller(models.Model):
     company_longitude = models.CharField(max_length=100, blank=True)
     company_established = models.CharField(max_length=100, blank=True)
     company_pan_number = models.CharField(max_length=100, blank=True)
-    company_pan_document = models.ImageField(upload_to='images/', blank=True)
+    company_pan_document = models.ImageField(upload_to=upload_path, blank=True)
     slug = models.SlugField(max_length=100, blank=True)
-
-    def save(self, *args, **kwargs):
-        if len(self.password) > 5:
-            self.password = make_password(self.password)
-        else:
-            raise ValidationErr('Password length must be greater than 5')
-
-        self.slug = slugify(self.company_name)
-        super(Seller, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Sellers'
 
     def __str__(self):
         return self.company_name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.company_name)
+        super(Seller, self).save(*args, **kwargs)
 
 
 class ProductCategory(models.Model):
@@ -104,11 +122,11 @@ class ProductSubCategory(models.Model):
 
 
 class Product(models.Model):
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=100)
-    price = models.FloatField(null=True, blank=True)
+    price = models.FloatField()
     description = models.TextField()
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to=upload_product_path)
     category = models.ForeignKey(
         ProductCategory, on_delete=models.CASCADE, null=True, blank=True)
     sub_category = models.ForeignKey(

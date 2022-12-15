@@ -1,9 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from accounts.models import *
 from .forms import *
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
+from django.contrib.auth import authenticate, login
 # Create your views here.
+
+User = get_user_model()
 
 
 def homepage(request):
@@ -20,6 +23,7 @@ def homepage(request):
         return render(request, 'main_app/search.html', context=context)
     return render(request, 'main_app/homepage.html')
 
+
 def company(request):
     if request.method == "GET":
         company_list = Seller.objects.all()
@@ -35,6 +39,8 @@ def company(request):
             'seller_lists': company_list,
         }
         return render(request, 'main_app/company.html', context=context)
+
+
 def product(request):
     if request.method == "GET":
         product_list = Product.objects.all()
@@ -51,27 +57,85 @@ def product(request):
         }
         return render(request, 'main_app/product.html', context=context)
 
-def seller_signup(request):
+
+def register_page(request):
+    form = CreateUserForm()
     if request.method == "POST":
-        form = SellerSignupForm(request.POST, request.FILES)
+        form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
-    else:
-        form = SellerSignupForm()
-    return render(request, 'main_app/seller_signup.html', {'form': form})
+            return redirect('login')
+    context = {'form': form}
+    return render(request, 'main_app/user_signup.html', context)
 
-def seller_login(request):
+
+def login_page(request):
+    form = UserLoginForm()
     if request.method == "POST":
-        form = SellerSignForm(request.POST)
-        print(form)
+        form = UserLoginForm(request.POST)
         if form.is_valid():
-            print("valid")
-            return redirect('/')
-    else:
-        form = SellerSignForm()
-    return render(request, 'main_app/seller_signin.html', {'form': form})
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('homepage')
+    context = {'form': form}
+    return render(request, 'main_app/user_login.html', context)
 
-def seller_logout(request):
+
+def logout_user(request):
     logout(request)
-    return redirect('/')
+    return redirect('homepage')
+
+
+def seller_register_page(request):
+    form = SellerSingupForm()
+
+    if request.method == "POST":
+        form = SellerSingupForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            return render(request, 'main_app/seller_signup.html', {'form': form})
+
+    context = {'form': form}
+    return render(request, 'main_app/seller_signup.html', context)
+
+
+def dashboard(request):
+    return render(request, 'main_app/dashboard.html')
+
+
+def add_product(request):
+    form = ProductForm()
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product.html', context)
+
+
+def add_product_category(request):
+    form = ProductCategoryForm()
+    if request.method == "POST":
+        form = ProductCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product_category.html', context)
+
+
+def add_product_sub_category(request):
+    form = ProductSubCategoryForm()
+    if request.method == "POST":
+        form = ProductSubCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_dashboard')
+    context = {'form': form}
+    return render(request, 'main_app/add_product_sub_category.html', context)

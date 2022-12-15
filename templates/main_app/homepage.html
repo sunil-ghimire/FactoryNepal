@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+Factory Nepal
+{% endblock title %}
 
 {% block content %}
 <div class="container">
@@ -8,7 +11,8 @@
                 <i class="fa fa-search"></i>
                 <form name="myform" method="POST" action="{% url 'homepage' %}">
                     {% csrf_token %}
-                    <input type="text" class="form-control" name="search" placeholder="Type company or product name ...">
+                    <input type="text" class="form-control" name="search"
+                        placeholder="Type company or product name ...">
                     <button class="btn btn-primary">Search</button>
                 </form>
             </div>
