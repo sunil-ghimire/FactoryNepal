@@ -8,4 +8,5 @@ router.register('products', ProductViewSet, basename='products')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('create_user/', create_user, name='create_user'),
 ]
