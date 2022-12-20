@@ -78,6 +78,7 @@ class Seller(User):
     company_pan_number = models.CharField(max_length=100, blank=True)
     company_pan_document = models.ImageField(upload_to=upload_path, blank=True)
     slug = models.SlugField(max_length=100, blank=True)
+    is_admin_approved = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Sellers'
