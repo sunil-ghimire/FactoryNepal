@@ -48,3 +48,9 @@ def create_seller(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def specific_seller_products(request, pk):
+    products = Product.objects.filter(seller=pk)
+    serializer = SpecificSellerProductSerializer(products, many=True)
+    return Response(serializer.data)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from accounts.models import *
+from rest_framework.response import Response
 
 
 class SellerSerializer(serializers.ModelSerializer):
@@ -35,3 +36,14 @@ class CreateSellerSerializer(serializers.ModelSerializer):
         seller.user_type = 'seller'
         seller.save()
         return seller
+
+
+class SpecificSellerProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'price', 'image', 'description','seller', 'category','sub_category','slug')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
