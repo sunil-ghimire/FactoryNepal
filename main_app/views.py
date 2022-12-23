@@ -26,7 +26,7 @@ def homepage(request):
 
 def company(request):
     if request.method == "GET":
-        company_list = Seller.objects.all()
+        company_list = Seller.objects.filter(is_admin_approved=True)
         context = {
             'seller_lists': company_list,
         }
@@ -51,7 +51,7 @@ def company_detail(request, pk):
 
 def product(request):
     if request.method == "GET":
-        product_list = Product.objects.all()
+        product_list = Product.objects.filter(is_admin_approved=True)
         context = {
             'product_lists': product_list,
         }
@@ -121,7 +121,8 @@ def seller_register_page(request):
 
 
 def dashboard(request):
-    products = Product.objects.all()
+    user = request.user
+    products = Product.objects.filter(seller=user)
     totol_price = Product.objects.all().aggregate(Sum('price'))
     context = {
         'products': products,
