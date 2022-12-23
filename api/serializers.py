@@ -64,3 +64,9 @@ class ProductCategorySerailizer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
         fields = ('name',)
+
+
+class ProductSubCategorySerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSubCategory
+        fields = ('name', 'category')

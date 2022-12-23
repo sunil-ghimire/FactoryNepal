@@ -20,6 +20,10 @@ class ProductCategoryViewSet(viewsets.ModelViewSet):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerailizer
 
+class ProductSubCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductSubCategory.objects.all()
+    serializer_class = ProductSubCategorySerailizer
+
 
 @api_view(['POST'])
 def create_user(request):
