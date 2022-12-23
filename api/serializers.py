@@ -2,6 +2,10 @@ from rest_framework import serializers
 from accounts.models import *
 from rest_framework.response import Response
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all_'
 
 class SellerSerializer(serializers.ModelSerializer):
     class Meta:

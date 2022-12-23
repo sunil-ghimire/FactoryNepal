@@ -3,6 +3,7 @@ from .views import *
 from django.urls import path, include
 
 router = DefaultRouter()
+router.register('users', UserViewSet, basename='users')
 router.register('sellers', SellerViewSet, basename='sellers')
 router.register('products', ProductViewSet, basename='products')
 router.register('product-category',ProductCategoryViewSet, basename='product-category')
