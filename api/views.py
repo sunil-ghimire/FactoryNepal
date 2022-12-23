@@ -33,7 +33,7 @@ def login_user(request):
     user = User.objects.filter(email=email).first()
     if user:
         if user.check_password(password):
-            serializer = CreateUserSerializer(user)
+            serializer = UserLoginSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Wrong password'}, status=status.HTTP_400_BAD_REQUEST)
@@ -48,6 +48,7 @@ def create_seller(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def specific_seller_products(request, pk):

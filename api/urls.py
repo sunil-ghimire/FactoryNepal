@@ -13,5 +13,6 @@ urlpatterns = [
 
     path('create_seller/', create_seller, name='create_seller'),
 
-    path('specific_seller_products/<int:pk>/', specific_seller_products, name='specific_seller_products'),
+    path('specific_seller_products/<int:pk>/',
+         specific_seller_products, name='specific_seller_products'),
 ]
