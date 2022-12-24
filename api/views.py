@@ -6,6 +6,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 class SellerViewSet(viewsets.ModelViewSet):
     queryset = Seller.objects.all()
@@ -15,6 +19,14 @@ class SellerViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+class ProductCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerailizer
+
+class ProductSubCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductSubCategory.objects.all()
+    serializer_class = ProductSubCategorySerailizer
 
 
 @api_view(['POST'])
