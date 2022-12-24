@@ -4,6 +4,7 @@ from accounts.models import *
 from .forms import *
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth import authenticate, login
+from .send_email import send_email
 # Create your views here.
 
 User = get_user_model()
@@ -107,10 +108,10 @@ def logout_user(request):
 def reset_password(request):
     if request.method == "POST":
         email = request.POST.get('reset-password')
-        print(email)
-        user = User.objects.filter(email=email)
+        user = User.objects.filter(email=email).first()
         if user:
             #send email
+            send_email("sunilnp105@gmail.com")
             return redirect('reset_password_sent')
     return render(request, 'main_app/reset_password.html', {})
 
