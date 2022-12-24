@@ -104,6 +104,19 @@ def logout_user(request):
     logout(request)
     return redirect('homepage')
 
+def reset_password(request):
+    if request.method == "POST":
+        email = request.POST.get('reset-password')
+        print(email)
+        user = User.objects.filter(email=email)
+        if user:
+            #send email
+            return redirect('reset_password_sent')
+    return render(request, 'main_app/reset_password.html', {})
+
+def reset_password_sent(request):
+    return render(request, 'main_app/reset_password_sent.html', {})
+
 
 def seller_register_page(request):
     form = SellerSingupForm()
