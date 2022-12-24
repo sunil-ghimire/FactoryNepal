@@ -1,8 +1,10 @@
 import smtplib
-from FactoryNepal.settings import env
+from django.conf import settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
+env = settings.ENV
 
-def send_email(to_email):
+def send_email(to_email,body):
     # Set up the SMTP server
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -12,7 +14,7 @@ def send_email(to_email):
     # Send the email
     to_email = to_email
     subject = "Password Reset"
-    body = "test body for email reset"
+    body = body
     message = f"Subject: {subject}\n\n{body}"
     server.sendmail("nh.engineer@gmail.com", to_email, message)
 
