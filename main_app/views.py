@@ -119,7 +119,7 @@ def reset_password(request):
             Please click on the link below to reset your password:
             http://localhost:8000/password-reset-confirm/{uidb64}/{user.token}/
             """
-            send_email("sunilnp105@gmail.com", body)
+            send_email(email, body)
             return redirect('reset_password_sent')
     return render(request, 'main_app/reset_password.html', {})
 
@@ -135,13 +135,15 @@ def reset_password_confirm(request, uidb64, token):
                 user.set_password(password1)
                 user.token = random.randint(100000, 9999999999)
                 user.save()
+                logout_user(request)
                 return redirect('login')
             else:
                 uidb64 = urlsafe_base64_encode((user.email).encode())
                 return redirect('reset_password_confirm', uidb64=uidb64, token=token)
         return render(request, 'main_app/reset_password_confirm.html', {})
-    return render(request, 'main_app/reset_password_confirm.html', {})
-
+    return render(request, 'main_app/reset_password.html', {
+        'error': 'Token is not valid, please request a new one'
+    })
 
 def reset_password_sent(request):
     return render(request, 'main_app/reset_password_sent.html', {})
