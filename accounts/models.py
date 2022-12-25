@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+import random
 
 
 class User(AbstractUser):
@@ -18,6 +19,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     full_name = models.CharField(max_length=100, null=True, blank=True)
+    token = models.CharField(max_length=100, null=True, blank=True)
 
     user_type = models.CharField(
         max_length=6,
@@ -39,6 +41,10 @@ class User(AbstractUser):
         else:
             return False
 
+    def save(self, *args, **kwargs):
+        #generate randrom token
+        self.token = random.randint(100000, 9999999999)
+        super(User, self).save(*args, **kwargs)
 
 def upload_path(instance, filename):
     return '/'.join(['images', str(instance.company_name), filename])
